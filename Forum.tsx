@@ -54,7 +54,7 @@ const Forum: React.FC = () => {
     <div className="w-full">
       {/* Forum Header */}
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-4xl font-bold text-pink-600">Community Forum</h1>
+        <h1 className="text-4xl font-bold text-pink-700">Community Forum</h1>
         <button className="bg-pink-600 text-white font-bold py-2 px-6 rounded-full hover:bg-pink-700 transition-colors duration-300 shadow-lg focus:outline-none focus:ring-4 focus:ring-pink-300">
           New Post
         </button>
@@ -69,7 +69,7 @@ const Forum: React.FC = () => {
                 <span className={`inline-block px-2 py-1 text-xs font-semibold rounded-full ${thread.categoryColor} mb-2`}>
                   {thread.category}
                 </span>
-                <h2 className="text-xl font-bold text-gray-800 hover:text-pink-600">{thread.title}</h2>
+                <h2 className="text-xl font-bold text-gray-800 hover:text-pink-700">{thread.title}</h2>
                 <p className="text-sm text-gray-500 mt-1">
                   Posted by <span className="font-semibold">{thread.author}</span> &middot; {thread.timestamp}
                 </p>

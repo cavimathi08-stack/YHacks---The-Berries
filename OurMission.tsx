@@ -3,7 +3,7 @@ import React from 'react';
 const OurMission: React.FC = () => {
   return (
     <div className="w-full max-w-4xl mx-auto bg-white/70 backdrop-blur-sm p-8 rounded-xl shadow-lg">
-      <h1 className="text-4xl font-bold text-pink-600 text-center mb-6">Our Mission</h1>
+      <h1 className="text-4xl font-bold text-pink-700 text-center mb-6">Our Mission</h1>
       <p className="text-lg text-gray-700 leading-relaxed">
         At OncoScan, our mission is to empower Indigenous women with the knowledge and tools to take charge of their breast health. 
         Guided by the principles of Good Health and Wellbeing (UNSDG #3), we aim to bridge healthcare gaps by combining technology, cultural understanding, and community collaboration. 
