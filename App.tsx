@@ -1,12 +1,15 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Onboarding from './Onboarding'; // Import the onboarding component
 import Forum from './Forum'; // Import the new Forum component
+import OurMission from './OurMission'; // Import the Our Mission component
 
 const App: React.FC = () => {
+  // State to track if the user has started the app journey
+  const [hasStarted, setHasStarted] = useState(false);
   // State to track if the onboarding process is complete
   const [isOnboardingComplete, setIsOnboardingComplete] = useState(false);
   // State to manage the current page view
-  const [currentPage, setCurrentPage] = useState<'home' | 'forum'>('home');
+  const [currentPage, setCurrentPage] = useState<'home' | 'forum' | 'our-mission'>('home');
   
   // State for menu visibility
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -30,7 +33,23 @@ const App: React.FC = () => {
     setIsOnboardingComplete(true);
   };
 
-  // Render the Onboarding component if not complete
+  // Render the initial welcome screen if the user hasn't started
+  if (!hasStarted) {
+    return (
+      <div className="flex flex-col items-center justify-center text-center h-screen bg-pink-200">
+        <h1 className="text-5xl font-bold text-pink-600 mb-4">OncoScan</h1>
+        <p className="text-lg text-pink-700 mb-8">Personalized for your journey.</p>
+        <button
+          onClick={() => setHasStarted(true)}
+          className="bg-pink-600 text-white font-bold py-3 px-10 rounded-full hover:bg-pink-700 transition-colors duration-300 shadow-lg focus:outline-none focus:ring-4 focus:ring-pink-300 text-xl"
+        >
+          Get Started
+        </button>
+      </div>
+    );
+  }
+
+  // Render the Onboarding component if started but not complete
   if (!isOnboardingComplete) {
     return <Onboarding onFinish={handleOnboardingFinish} />;
   }
@@ -40,13 +59,16 @@ const App: React.FC = () => {
     switch(currentPage) {
       case 'forum':
         return <Forum />;
+      case 'our-mission':
+        return <OurMission />;
       case 'home':
       default:
         return (
           <div className="flex flex-col items-center justify-center text-center h-full pt-16">
-            <h1 className="text-4xl font-bold text-pink-600 mb-4">Welcome to OncoScan</h1>
-            <p className="text-lg text-pink-700 mb-8">Personalized for your journey.</p>
-            <img src="https://storage.googleapis.com/awe-persistent-files/19a9b2b8-93ff-46a2-a9b0-985160b83e39.png" alt="OncoScan Logo - The Future of Women's Health" className="mx-auto w-full max-w-md" />
+            <h1 className="text-7xl font-extrabold mb-6 text-pink-800 drop-shadow-sm">
+              Welcome to OncoScan
+            </h1>
+            <p className="text-2xl text-pink-700/90 mt-2">Personalized for your journey.</p>
           </div>
         );
     }
@@ -58,41 +80,52 @@ const App: React.FC = () => {
       {/* Header section */}
       <header className="w-full p-4 flex justify-between items-center text-pink-600 bg-pink-200/80 backdrop-blur-sm sticky top-0 z-10">
         
-        {/* Menu (left side) */}
-        <div className="relative" ref={menuRef}>
-          <button
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="p-2 rounded-md hover:bg-pink-300/50 focus:outline-none focus:ring-2 focus:ring-pink-500"
-            aria-label="Open navigation menu"
-            aria-expanded={isMenuOpen}
-            aria-controls="navigation-menu"
-          >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16"></path>
-            </svg>
-          </button>
-          
-          {/* Dropdown Menu */}
-          {isMenuOpen && (
-            <nav
-              id="navigation-menu"
-              className="absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-20"
+        {/* Left side: Menu */}
+        <div className="flex-1 flex justify-start">
+          <div className="relative" ref={menuRef}>
+            <button
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="p-2 rounded-md hover:bg-pink-300/50 focus:outline-none focus:ring-2 focus:ring-pink-500"
+              aria-label="Open navigation menu"
+              aria-expanded={isMenuOpen}
+              aria-controls="navigation-menu"
             >
-              <button onClick={() => { setCurrentPage('home'); setIsMenuOpen(false); }} className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-pink-100">Home</button>
-              <button onClick={() => { setCurrentPage('forum'); setIsMenuOpen(false); }} className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-pink-100">Forum</button>
-              <a href="#team" onClick={() => setIsMenuOpen(false)} className="block px-4 py-2 text-sm text-gray-700 hover:bg-pink-100">Our Team</a>
-              <a href="#mission" onClick={() => setIsMenuOpen(false)} className="block px-4 py-2 text-sm text-gray-700 hover:bg-pink-100">Our Mission</a>
-            </nav>
-          )}
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16"></path>
+              </svg>
+            </button>
+            
+            {/* Dropdown Menu */}
+            {isMenuOpen && (
+              <nav
+                id="navigation-menu"
+                className="absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-20"
+              >
+                <button onClick={() => { setCurrentPage('home'); setIsMenuOpen(false); }} className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-pink-100">Home</button>
+                <button onClick={() => { setCurrentPage('forum'); setIsMenuOpen(false); }} className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-pink-100">Forum</button>
+                <a href="#team" onClick={() => setIsMenuOpen(false)} className="block px-4 py-2 text-sm text-gray-700 hover:bg-pink-100">Our Team</a>
+                <button onClick={() => { setCurrentPage('our-mission'); setIsMenuOpen(false); }} className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-pink-100">Our Mission</button>
+              </nav>
+            )}
+          </div>
         </div>
 
-        {/* Language Button (right side) */}
-        <button className="flex items-center space-x-2 p-2 rounded-md hover:bg-pink-300/50 focus:outline-none focus:ring-2 focus:ring-pink-500">
-           <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9V3m0 18a9 9 0 009-9m-9 9a9 9 0 00-9-9" />
-          </svg>
-          <span className="font-medium hidden sm:inline">Language</span>
-        </button>
+        {/* Center: Logo and Title */}
+        <div className="flex-1 flex justify-center">
+          <button onClick={() => setCurrentPage('home')} className="flex items-center focus:outline-none focus:ring-2 focus:ring-pink-500 rounded-md p-1">
+            <img src="http://www.w3.org/2000/svg" alt="OncoScan Logo" className="h-12 w-auto" />
+          </button>
+        </div>
+        
+        {/* Right side: Language Button */}
+        <div className="flex-1 flex justify-end">
+          <button className="flex items-center space-x-2 p-2 rounded-md hover:bg-pink-300/50 focus:outline-none focus:ring-2 focus:ring-pink-500">
+             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9V3m0 18a9 9 0 009-9m-9 9a9 9 0 00-9-9" />
+            </svg>
+            <span className="font-medium hidden sm:inline">Language</span>
+          </button>
+        </div>
       </header>
       
       {/* Main content area, renders the current page */}
