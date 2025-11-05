@@ -1,11 +1,18 @@
 import React, { useState, useRef, useEffect } from 'react';
+import Onboarding from './Onboarding'; // Import the onboarding component
+import Forum from './Forum'; // Import the new Forum component
 
 const App: React.FC = () => {
+  // State to track if the onboarding process is complete
+  const [isOnboardingComplete, setIsOnboardingComplete] = useState(false);
+  // State to manage the current page view
+  const [currentPage, setCurrentPage] = useState<'home' | 'forum'>('home');
+  
   // State for menu visibility
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
-  // Effect to handle clicks outside the menu to close it, improving UX
+  // Effect to handle clicks outside the menu to close it
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
@@ -18,11 +25,38 @@ const App: React.FC = () => {
     };
   }, []);
 
+  // Callback function to be called when onboarding is finished
+  const handleOnboardingFinish = () => {
+    setIsOnboardingComplete(true);
+  };
+
+  // Render the Onboarding component if not complete
+  if (!isOnboardingComplete) {
+    return <Onboarding onFinish={handleOnboardingFinish} />;
+  }
+  
+  // Function to render the correct page based on state
+  const renderPage = () => {
+    switch(currentPage) {
+      case 'forum':
+        return <Forum />;
+      case 'home':
+      default:
+        return (
+          <div className="flex flex-col items-center justify-center text-center h-full pt-16">
+            <h1 className="text-4xl font-bold text-pink-600 mb-4">Welcome to OncoScan</h1>
+            <p className="text-lg text-pink-700 mb-8">Personalized for your journey.</p>
+            <img src="https://storage.googleapis.com/awe-persistent-files/19a9b2b8-93ff-46a2-a9b0-985160b83e39.png" alt="OncoScan Logo - The Future of Women's Health" className="mx-auto w-full max-w-md" />
+          </div>
+        );
+    }
+  };
+
   return (
     // Main container with a vertical layout and a background color matching the logo
     <div className="flex flex-col min-h-screen bg-pink-200 text-gray-900 antialiased">
       {/* Header section */}
-      <header className="w-full p-4 flex justify-between items-center text-pink-600">
+      <header className="w-full p-4 flex justify-between items-center text-pink-600 bg-pink-200/80 backdrop-blur-sm sticky top-0 z-10">
         
         {/* Menu (left side) */}
         <div className="relative" ref={menuRef}>
@@ -44,9 +78,10 @@ const App: React.FC = () => {
               id="navigation-menu"
               className="absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-20"
             >
-              <a href="#team" className="block px-4 py-2 text-sm text-gray-700 hover:bg-pink-100">Our Team</a>
-              <a href="#mission" className="block px-4 py-2 text-sm text-gray-700 hover:bg-pink-100">Our Mission</a>
-              <a href="#forum" className="block px-4 py-2 text-sm text-gray-700 hover:bg-pink-100">Forum</a>
+              <button onClick={() => { setCurrentPage('home'); setIsMenuOpen(false); }} className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-pink-100">Home</button>
+              <button onClick={() => { setCurrentPage('forum'); setIsMenuOpen(false); }} className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-pink-100">Forum</button>
+              <a href="#team" onClick={() => setIsMenuOpen(false)} className="block px-4 py-2 text-sm text-gray-700 hover:bg-pink-100">Our Team</a>
+              <a href="#mission" onClick={() => setIsMenuOpen(false)} className="block px-4 py-2 text-sm text-gray-700 hover:bg-pink-100">Our Mission</a>
             </nav>
           )}
         </div>
@@ -60,10 +95,9 @@ const App: React.FC = () => {
         </button>
       </header>
       
-      {/* Main content area, centered */}
-      <main className="flex-grow flex items-center justify-center p-8">
-        {/* The OncoScan logo image */}
-        <img src="https://storage.googleapis.com/awe-persistent-files/19a9b2b8-93ff-46a2-a9b0-985160b83e39.png" alt="OncoScan Logo - The Future of Women's Health" className="mx-auto w-full max-w-md" />
+      {/* Main content area, renders the current page */}
+      <main className="flex-grow w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {renderPage()}
       </main>
     </div>
   );
