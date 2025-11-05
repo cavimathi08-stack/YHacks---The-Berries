@@ -3,6 +3,7 @@ import Onboarding from './Onboarding'; // Import the onboarding component
 import Forum from './Forum'; // Import the new Forum component
 import OurMission from './OurMission'; // Import the Our Mission component
 import OurTeam from './OurTeam'; // Import the Our Team component
+import MammoAtHome from './MammoAtHome'; // Import the Mammo-at-Home component
 
 const App: React.FC = () => {
   // State to track if the user has started the app journey
@@ -10,7 +11,7 @@ const App: React.FC = () => {
   // State to track if the onboarding process is complete
   const [isOnboardingComplete, setIsOnboardingComplete] = useState(false);
   // State to manage the current page view
-  const [currentPage, setCurrentPage] = useState<'home' | 'forum' | 'our-mission' | 'our-team'>('home');
+  const [currentPage, setCurrentPage] = useState<'home' | 'forum' | 'our-mission' | 'our-team' | 'mammo-at-home'>('home');
   
   // State for menu visibility
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -64,6 +65,8 @@ const App: React.FC = () => {
         return <OurMission />;
       case 'our-team':
         return <OurTeam />;
+      case 'mammo-at-home':
+        return <MammoAtHome />;
       case 'home':
       default:
         return (
@@ -105,6 +108,7 @@ const App: React.FC = () => {
                 className="absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-20"
               >
                 <button onClick={() => { setCurrentPage('home'); setIsMenuOpen(false); }} className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-pink-100">Home</button>
+                <button onClick={() => { setCurrentPage('mammo-at-home'); setIsMenuOpen(false); }} className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-pink-100">Mammo-at-Home</button>
                 <button onClick={() => { setCurrentPage('forum'); setIsMenuOpen(false); }} className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-pink-100">Forum</button>
                 <button onClick={() => { setCurrentPage('our-team'); setIsMenuOpen(false); }} className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-pink-100">Our Team</button>
                 <button onClick={() => { setCurrentPage('our-mission'); setIsMenuOpen(false); }} className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-pink-100">Our Mission</button>
@@ -116,7 +120,7 @@ const App: React.FC = () => {
         {/* Center: Logo and Title */}
         <div className="flex-1 flex justify-center">
           <button onClick={() => setCurrentPage('home')} className="flex items-center focus:outline-none focus:ring-2 focus:ring-pink-500 rounded-md p-1">
-            <img src="http://www.w3.org/2000/svg" alt="OncoScan Logo" className="h-12 w-auto" />
+            <img src="https://i.ibb.co/9mY10hy/oncoscan-logo-2.png" alt="OncoScan Logo" className="h-12 w-auto" />
           </button>
         </div>
         
