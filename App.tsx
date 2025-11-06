@@ -2,12 +2,11 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Onboarding from './Onboarding'; // Import the onboarding component
 import Forum from './Forum'; // Import the new Forum component
-import OurMission from './OurMission'; // Import the Our Mission component
 import OurTeam from './OurTeam'; // Import the Our Team component
-import OurPartners from './OurPartners'; // Import the Our Partners component
 import MammoAtHome from './MammoAtHome'; // Import the Mammo-at-Home component
 import PatientDatabase from './PatientDatabase'; // Import the Patient Database component
 import OurProcess from './OurProcess'; // Import the Our Process component
+import HomePage from './HomePage'; // Import the new consolidated Home Page component
 
 const App: React.FC = () => {
   // State to track if the user has started the app journey
@@ -15,7 +14,7 @@ const App: React.FC = () => {
   // State to track if the onboarding process is complete
   const [isOnboardingComplete, setIsOnboardingComplete] = useState(false);
   // State to manage the current page view
-  const [currentPage, setCurrentPage] = useState<'home' | 'forum' | 'our-mission' | 'our-team' | 'our-partners' | 'mammo-at-home' | 'my-patient-database' | 'our-process'>('home');
+  const [currentPage, setCurrentPage] = useState<'home' | 'forum' | 'our-team' | 'mammo-at-home' | 'my-patient-database' | 'our-process'>('home');
   const [userRole, setUserRole] = useState<string | null>(null);
   
   // State for menu visibility
@@ -48,6 +47,11 @@ const App: React.FC = () => {
     setIsOnboardingComplete(true);
   };
 
+  // Function to handle navigation from child components
+  const navigateTo = (page: 'home' | 'forum' | 'our-team' | 'mammo-at-home' | 'my-patient-database' | 'our-process') => {
+    setCurrentPage(page);
+  };
+
   // Render the initial welcome screen if the user hasn't started
   if (!hasStarted) {
     return (
@@ -78,12 +82,8 @@ const App: React.FC = () => {
     switch(currentPage) {
       case 'forum':
         return <Forum />;
-      case 'our-mission':
-        return <OurMission />;
       case 'our-team':
         return <OurTeam />;
-      case 'our-partners':
-        return <OurPartners />;
       case 'mammo-at-home':
         return <MammoAtHome />;
       case 'my-patient-database':
@@ -92,14 +92,7 @@ const App: React.FC = () => {
         return <OurProcess />;
       case 'home':
       default:
-        return (
-          <div className="flex flex-col items-center justify-center text-center h-full pt-16">
-            <h1 className="text-7xl font-extrabold mb-6 text-pink-700 drop-shadow-sm">
-              Welcome to OnAURA
-            </h1>
-            <p className="text-2xl text-pink-700/90 mt-2">The Future of Women's Health</p>
-          </div>
-        );
+        return <HomePage navigateTo={navigateTo} userRole={userRole} />;
     }
   };
 
@@ -144,8 +137,6 @@ const App: React.FC = () => {
                   <button onClick={() => { setCurrentPage('my-patient-database'); setIsMenuOpen(false); }} className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-pink-100">My Patient Database</button>
                 )}
                 <button onClick={() => { setCurrentPage('our-team'); setIsMenuOpen(false); }} className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-pink-100">Our Team</button>
-                <button onClick={() => { setCurrentPage('our-partners'); setIsMenuOpen(false); }} className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-pink-100">Our Partners</button>
-                <button onClick={() => { setCurrentPage('our-mission'); setIsMenuOpen(false); }} className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-pink-100">Our Mission</button>
                 <button onClick={() => { setCurrentPage('our-process'); setIsMenuOpen(false); }} className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-pink-100">Our Process</button>
               </nav>
             )}
