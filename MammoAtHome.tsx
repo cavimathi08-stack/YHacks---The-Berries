@@ -1,91 +1,133 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useRef } from 'react';
+
+interface MonthlyImage {
+  url: string;
+  name: string;
+}
 
 const MammoAtHome: React.FC = () => {
-  const [images, setImages] = useState<{ url: string; name: string; date: string }[]>([]);
-  const [isDragging, setIsDragging] = useState(false);
+  const [months, setMonths] = useState<string[]>(['Month 1', 'Month 2', 'Month 3']);
+  const [monthlyImages, setMonthlyImages] = useState<Record<string, MonthlyImage | null>>({});
+  const [draggedOverMonth, setDraggedOverMonth] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [selectedMonth, setSelectedMonth] = useState<string | null>(null);
 
   const handleFileChange = (files: FileList | null) => {
-    if (files) {
-      const newImages = Array.from(files).map(file => ({
+    if (files && files[0] && selectedMonth) {
+      const file = files[0];
+      const newImage = {
         url: URL.createObjectURL(file),
         name: file.name,
-        date: new Date().toLocaleDateString(),
-      }));
-      setImages(prevImages => [...prevImages, ...newImages]);
+      };
+      setMonthlyImages(prev => ({ ...prev, [selectedMonth]: newImage }));
+      setSelectedMonth(null); // Reset after upload
     }
   };
+  
+  const handleCardClick = (month: string) => {
+    setSelectedMonth(month);
+    fileInputRef.current?.click();
+  };
 
-  const onDragOver = useCallback((event: React.DragEvent<HTMLDivElement>) => {
+  const onDragOver = useCallback((event: React.DragEvent<HTMLDivElement>, month: string) => {
     event.preventDefault();
-    setIsDragging(true);
+    setDraggedOverMonth(month);
   }, []);
 
   const onDragLeave = useCallback((event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
-    setIsDragging(false);
+    setDraggedOverMonth(null);
   }, []);
 
-  const onDrop = useCallback((event: React.DragEvent<HTMLDivElement>) => {
+  const onDrop = useCallback((event: React.DragEvent<HTMLDivElement>, month: string) => {
     event.preventDefault();
-    setIsDragging(false);
+    setDraggedOverMonth(null);
     const files = event.dataTransfer.files;
-    handleFileChange(files);
+    if (files && files[0]) {
+      const file = files[0];
+      const newImage = {
+        url: URL.createObjectURL(file),
+        name: file.name,
+      };
+      setMonthlyImages(prev => ({ ...prev, [month]: newImage }));
+    }
   }, []);
+
+  const addMonth = () => {
+    setMonths(prev => [...prev, `Month ${prev.length + 1}`]);
+  };
 
   return (
     <div className="w-full max-w-6xl mx-auto">
       <div className="text-center mb-10">
         <h1 className="text-4xl font-bold text-pink-700">Mammo-at-Home</h1>
         <p className="text-lg text-pink-700/90 mt-2">
-          A private space to track changes over time. Upload regular photos for your personal records.
+          Your private monthly calendar. Upload a photo each month to track changes over time.
         </p>
+        <p className="text-sm text-gray-500 mt-2">Your images are private and only visible to you.</p>
       </div>
+      
+      <input
+        type="file"
+        ref={fileInputRef}
+        className="hidden"
+        accept="image/*"
+        onChange={(e) => handleFileChange(e.target.files)}
+      />
 
-      {/* File Upload Section */}
-      <div 
-        className={`bg-white/70 backdrop-blur-sm p-8 rounded-xl shadow-lg border-4 border-dashed ${isDragging ? 'border-pink-500' : 'border-pink-300'} transition-colors duration-300`}
-        onDragOver={onDragOver}
-        onDragLeave={onDragLeave}
-        onDrop={onDrop}
-      >
-        <input
-          type="file"
-          id="fileUpload"
-          multiple
-          accept="image/*"
-          className="hidden"
-          onChange={(e) => handleFileChange(e.target.files)}
-        />
-        <label htmlFor="fileUpload" className="flex flex-col items-center justify-center cursor-pointer text-center">
-          <svg xmlns="http://www.w3.org/2000/svg" className="w-16 h-16 text-pink-500 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
-          </svg>
-          <h3 className="text-xl font-semibold text-gray-700">Drag & drop your images here</h3>
-          <p className="text-gray-500 mt-1">or click to select files</p>
-          <p className="text-xs text-gray-400 mt-4">Your images are private and only visible to you.</p>
-        </label>
-      </div>
-
-      {/* Image Gallery Section */}
-      <div className="mt-12">
-        <h2 className="text-2xl font-bold text-pink-700 mb-6">Your Upload History</h2>
-        {images.length > 0 ? (
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-            {images.map((image, index) => (
-              <div key={index} className="bg-white/70 p-3 rounded-lg shadow-md group relative overflow-hidden">
-                <img src={image.url} alt={image.name} className="w-full h-32 object-cover rounded-md" />
-                <div className="absolute bottom-0 left-0 right-0 bg-black/50 text-white p-2 text-xs opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <p className="font-semibold truncate">{image.name}</p>
-                  <p>{image.date}</p>
+      {/* Monthly Calendar Grid */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
+        {months.map((month) => {
+          const image = monthlyImages[month];
+          return (
+            <div
+              key={month}
+              className={`relative aspect-square bg-white/70 backdrop-blur-sm rounded-xl shadow-lg border-2 border-dashed ${draggedOverMonth === month ? 'border-pink-500' : 'border-pink-300'} transition-all duration-300 flex items-center justify-center text-center cursor-pointer overflow-hidden group`}
+              onClick={() => !image && handleCardClick(month)}
+              onDragOver={(e) => onDragOver(e, month)}
+              onDragLeave={onDragLeave}
+              onDrop={(e) => onDrop(e, month)}
+            >
+              {image ? (
+                <>
+                  <img src={image.url} alt={`${month} upload`} className="w-full h-full object-cover" />
+                  <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <p className="text-white font-bold text-lg">{month}</p>
+                    <button
+                      onClick={() => handleCardClick(month)}
+                      className="mt-2 bg-white/80 text-black text-xs font-bold py-1 px-3 rounded-full hover:bg-white"
+                    >
+                      Change Photo
+                    </button>
+                  </div>
+                </>
+              ) : (
+                <div className="flex flex-col items-center p-4">
+                   <svg xmlns="http://www.w3.org/2000/svg" className="w-10 h-10 text-pink-400 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                  </svg>
+                  <h3 className="font-semibold text-pink-700">{month}</h3>
+                  <p className="text-xs text-gray-500 mt-1">
+                    Click or drag to upload
+                  </p>
                 </div>
-              </div>
-            ))}
+              )}
+            </div>
+          );
+        })}
+        {/* Add Month Button */}
+        <div
+          key="add-month"
+          className="relative aspect-square bg-white/60 backdrop-blur-sm rounded-xl shadow-lg border-2 border-dashed border-pink-300 hover:border-pink-500 hover:bg-white/80 transition-all duration-300 flex items-center justify-center text-center cursor-pointer"
+          onClick={addMonth}
+        >
+          <div className="flex flex-col items-center p-4">
+            <svg xmlns="http://www.w3.org/2000/svg" className="w-10 h-10 text-pink-400 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+            </svg>
+            <h3 className="font-semibold text-pink-700">Add Month</h3>
           </div>
-        ) : (
-          <div className="text-center bg-white/70 p-8 rounded-xl shadow-md">
-            <p className="text-gray-500">Your uploaded photos will appear here.</p>
-          </div>
-        )}
+        </div>
       </div>
     </div>
   );

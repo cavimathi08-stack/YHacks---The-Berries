@@ -18,19 +18,19 @@ const Onboarding: React.FC<OnboardingProps> = ({ onFinish }) => {
             <h2 className="text-3xl font-bold text-pink-700 mb-6">Tell us who you are</h2>
             <div className="space-y-4">
               <button
-                onClick={() => { setRole('patient'); setStep(2); }}
+                onClick={() => { localStorage.setItem('userRole', 'patient'); setRole('patient'); setStep(2); }}
                 className="w-full max-w-sm bg-white text-pink-700 font-bold py-4 px-6 rounded-lg border-2 border-pink-500 hover:bg-pink-100 transition-colors duration-300 shadow-md"
               >
                 I'm a Patient
               </button>
               <button
-                onClick={() => { setRole('doctor'); setStep(2); }}
+                onClick={() => { localStorage.setItem('userRole', 'doctor'); setRole('doctor'); setStep(2); }}
                 className="w-full max-w-sm bg-white text-pink-700 font-bold py-4 px-6 rounded-lg border-2 border-pink-500 hover:bg-pink-100 transition-colors duration-300 shadow-md"
               >
                 I'm a Doctor or Researcher
               </button>
               <button
-                onClick={() => { setRole('explorer'); setStep(2); }}
+                onClick={() => { localStorage.setItem('userRole', 'explorer'); setRole('explorer'); setStep(2); }}
                 className="w-full max-w-sm bg-white text-pink-700 font-bold py-4 px-6 rounded-lg border-2 border-pink-500 hover:bg-pink-100 transition-colors duration-300 shadow-md"
               >
                 Just Exploring
