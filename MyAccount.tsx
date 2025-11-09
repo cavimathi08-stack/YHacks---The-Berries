@@ -22,6 +22,12 @@ interface UserData {
       content: string;
     }>;
   }>;
+  symptomLogs?: Array<{
+    date: string;
+    symptoms: string[];
+    notes: string;
+    timestamp: string;
+  }>;
 }
 
 // Options for the edit form dropdowns, consistent with Onboarding.tsx
@@ -201,6 +207,41 @@ const MyAccount: React.FC = () => {
       {/* Profile Card */}
       <div className="bg-white/70 backdrop-blur-sm p-6 sm:p-8 rounded-xl shadow-lg transition-all duration-500">
         {isEditing ? renderEditMode() : renderViewMode()}
+      </div>
+
+      {/* Symptom Logs Section */}
+      <div className="bg-white/70 backdrop-blur-sm p-6 sm:p-8 rounded-xl shadow-lg">
+        <h2 className="text-2xl font-bold text-pink-700 mb-4 text-center">Your Symptom Log</h2>
+        {userData?.symptomLogs && userData.symptomLogs.length > 0 ? (
+          <div className="space-y-4 max-h-96 overflow-y-auto pr-2">
+            {[...userData.symptomLogs].reverse().map((log, index) => (
+              <div key={index} className="bg-white/50 p-4 rounded-lg border border-pink-100">
+                <p className="font-bold text-gray-800">
+                  Logged on: <span className="font-normal">{new Date(log.timestamp).toLocaleDateString()}</span>
+                </p>
+                <p className="text-sm text-gray-500 mt-1">
+                  Observation Date: {log.date}
+                </p>
+                {log.symptoms.length > 0 && (
+                    <div className="mt-2">
+                        <h4 className="font-semibold text-pink-600">Symptoms:</h4>
+                        <ul className="list-disc list-inside text-sm text-gray-700">
+                            {log.symptoms.map(s => <li key={s}>{s}</li>)}
+                        </ul>
+                    </div>
+                )}
+                {log.notes && (
+                    <div className="mt-2">
+                        <h4 className="font-semibold text-pink-600">Notes:</h4>
+                        <p className="text-sm text-gray-700 italic">"{log.notes}"</p>
+                    </div>
+                )}
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p className="text-center text-gray-600">You haven't logged any symptoms yet.</p>
+        )}
       </div>
 
       {/* Recent Posts Section */}

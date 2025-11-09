@@ -33,6 +33,12 @@ interface UserData {
       content: string;
     }>;
   }>;
+  symptomLogs?: Array<{
+    date: string;
+    symptoms: string[];
+    notes: string;
+    timestamp: string;
+  }>;
 }
 
 const NavButton: React.FC<{ page: string; label: string; current: string; onClick: () => void }> = ({ page, label, current, onClick }) => (
@@ -119,6 +125,14 @@ const App: React.FC = () => {
                 ]
               }
             ],
+            symptomLogs: [
+              {
+                date: '2024-10-15',
+                symptoms: ['New lump or knot', 'Swelling or thickening'],
+                notes: 'Found a small, pea-sized hard lump on the upper-outer section of the left breast during my monthly check.',
+                timestamp: '2024-10-15T10:00:00.000Z'
+              }
+            ]
         };
         localStorage.setItem('onAuraUsers', JSON.stringify(users));
     }

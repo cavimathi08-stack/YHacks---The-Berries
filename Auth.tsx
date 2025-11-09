@@ -63,6 +63,7 @@ const Auth: React.FC<AuthProps> = ({ onLoginSuccess }) => {
       localHospital: null,
       province: null,
       posts: [],
+      symptomLogs: [],
     };
     db.saveUsers(users);
     onLoginSuccess(username);

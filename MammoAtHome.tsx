@@ -1,6 +1,7 @@
-
 import React, { useState, useCallback, useRef } from 'react';
 import DataSafety from './DataSafety';
+import BreastSelfExam from './BreastSelfExam';
+import SymptomLogger from './SymptomLogger';
 
 interface MonthlyImage {
   url: string;
@@ -13,6 +14,8 @@ interface MammoAtHomeProps {
 }
 
 const MammoAtHome: React.FC<MammoAtHomeProps> = ({ currentUser }) => {
+  const [showInstructions, setShowInstructions] = useState(false);
+  const [showSymptomLogger, setShowSymptomLogger] = useState(false);
   const [months, setMonths] = useState<string[]>(['Month 1', 'Month 2', 'Month 3']);
   const [monthlyImages, setMonthlyImages] = useState<Record<string, MonthlyImage | null>>({});
   const [draggedOverMonth, setDraggedOverMonth] = useState<string | null>(null);
@@ -66,6 +69,14 @@ const MammoAtHome: React.FC<MammoAtHomeProps> = ({ currentUser }) => {
     setMonths(prev => [...prev, `Month ${prev.length + 1}`]);
   };
 
+  if (showInstructions) {
+    return <BreastSelfExam onBack={() => setShowInstructions(false)} />;
+  }
+
+  if (showSymptomLogger) {
+    return <SymptomLogger onBack={() => setShowSymptomLogger(false)} currentUser={currentUser} />;
+  }
+
   return (
     <div className="w-full max-w-6xl mx-auto space-y-8">
       {currentUser === 'Aura' && (
@@ -81,6 +92,20 @@ const MammoAtHome: React.FC<MammoAtHomeProps> = ({ currentUser }) => {
           Your private monthly calendar. Upload a photo each month to track changes over time.
         </p>
         <p className="text-sm text-gray-500 mt-2">Your images are private and only visible to you.</p>
+        <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mt-6">
+          <button
+            onClick={() => setShowInstructions(true)}
+            className="w-full sm:w-auto bg-white text-pink-700 font-bold py-2 px-6 rounded-full hover:bg-pink-100 transition-colors duration-300 shadow-md border-2 border-pink-500 focus:outline-none focus:ring-4 focus:ring-pink-300"
+          >
+            How to do a breast self-exam
+          </button>
+          <button
+            onClick={() => setShowSymptomLogger(true)}
+            className="w-full sm:w-auto bg-pink-600 text-white font-bold py-2 px-6 rounded-full hover:bg-pink-700 transition-colors duration-300 shadow-lg focus:outline-none focus:ring-4 focus:ring-pink-300"
+          >
+            Log Symptoms & Irregularities
+          </button>
+        </div>
       </div>
       
       <DataSafety />
