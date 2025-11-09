@@ -38,10 +38,21 @@ interface UserData {
 const NavButton: React.FC<{ page: string; label: string; current: string; onClick: () => void }> = ({ page, label, current, onClick }) => (
   <button
     onClick={onClick}
-    className={`py-2 px-4 rounded-md font-semibold transition-colors duration-200 text-sm sm:text-base ${
+    className={`py-2 px-3 sm:px-4 rounded-md font-semibold transition-colors duration-200 text-sm whitespace-nowrap ${
       current === page
         ? 'bg-white text-pink-700 shadow-inner'
         : 'text-pink-100 hover:bg-pink-600 hover:text-white'
+    }`}
+  >
+    {label}
+  </button>
+);
+
+const MobileNavButton: React.FC<{ label: string; onClick: () => void; current: boolean }> = ({ label, onClick, current }) => (
+  <button
+    onClick={onClick}
+    className={`w-full text-left py-3 px-4 text-lg font-semibold rounded-md ${
+      current ? 'bg-pink-800 text-white' : 'text-pink-100 hover:bg-pink-600'
     }`}
   >
     {label}
@@ -56,7 +67,10 @@ const App: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<'home' | 'forum' | 'mammo-at-home' | 'my-patient-database' | 'our-process' | 'my-account' | 'connect' | 'our-team'>('home');
   
   const [isLanguageMenuOpen, setIsLanguageMenuOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const languageMenuRef = useRef<HTMLDivElement>(null);
+  const mobileMenuRef = useRef<HTMLDivElement>(null);
+  const mobileMenuButtonRef = useRef<HTMLButtonElement>(null);
 
   // Effect to check for a logged-in user on initial load and ensure demo user exists
   useEffect(() => {
@@ -125,6 +139,9 @@ const App: React.FC = () => {
       if (languageMenuRef.current && !languageMenuRef.current.contains(event.target as Node)) {
         setIsLanguageMenuOpen(false);
       }
+      if (mobileMenuRef.current && !mobileMenuRef.current.contains(event.target as Node) && mobileMenuButtonRef.current && !mobileMenuButtonRef.current.contains(event.target as Node)) {
+        setIsMobileMenuOpen(false);
+      }
     };
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
@@ -154,6 +171,7 @@ const App: React.FC = () => {
 
   const navigateTo = (page: 'home' | 'forum' | 'mammo-at-home' | 'my-patient-database' | 'our-process' | 'my-account' | 'connect' | 'our-team') => {
     setCurrentPage(page);
+    setIsMobileMenuOpen(false);
   };
   
   const languages = ['English', 'Français', 'Cree', 'Inuktitut', 'Ojibwe'];
@@ -192,23 +210,35 @@ const App: React.FC = () => {
 
   return (
     <div className="flex flex-col min-h-screen bg-pink-200 text-gray-900 antialiased">
-      <header className="w-full h-[96px] p-4 flex justify-between items-center text-pink-700 bg-pink-50 shadow-md backdrop-blur-sm sticky top-0 z-10">
+      <header className="w-full h-[96px] p-4 flex justify-between items-center text-pink-700 bg-pink-50 shadow-md backdrop-blur-sm sticky top-0 z-20">
         <div className="flex-1 flex justify-start items-center">
+          <button
+            ref={mobileMenuButtonRef}
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            className="p-2 rounded-md hover:bg-pink-100/50 focus:outline-none focus:ring-2 focus:ring-pink-500 sm:hidden mr-2"
+            aria-label="Open navigation menu"
+            aria-haspopup="true"
+            aria-expanded={isMobileMenuOpen}
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </button>
           <img
             src="https://i.ibb.co/fV8hMfkD/NAURA-1-removebg-preview.png"
             alt="OnAURA Secondary Logo"
-            className="h-12 mr-2"
+            className="h-10 sm:h-12"
           />
         </div>
-        <div className="flex-1 flex justify-center">
-          <button onClick={() => setCurrentPage('home')} className="flex items-center focus:outline-none">
-            <img src="https://i.ibb.co/qMNnzDzq/Untitled-2.png" alt="OnAURA Logo" className="h-16" />
+        <div className="flex-shrink-0">
+          <button onClick={() => navigateTo('home')} className="flex items-center focus:outline-none">
+            <img src="https://i.ibb.co/qMNnzDzq/Untitled-2.png" alt="OnAURA Logo" className="h-14 sm:h-16" />
           </button>
         </div>
-        <div className="flex-1 flex justify-end items-center gap-4">
+        <div className="flex-1 flex justify-end items-center gap-2 sm:gap-4">
            <button 
              onClick={handleLogout} 
-             className="font-semibold p-2 rounded-md hover:bg-pink-100/50 focus:outline-none focus:ring-2 focus:ring-pink-500"
+             className="font-semibold p-2 rounded-md hover:bg-pink-100/50 focus:outline-none focus:ring-2 focus:ring-pink-500 text-sm sm:text-base"
             >
               Logout
             </button>
@@ -226,7 +256,7 @@ const App: React.FC = () => {
               <span className="font-medium hidden sm:inline">Language</span>
             </button>
             {isLanguageMenuOpen && (
-              <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-20">
+              <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-30">
                 {languages.map((lang) => (
                   <button
                     key={lang}
@@ -241,20 +271,41 @@ const App: React.FC = () => {
           </div>
         </div>
       </header>
-      <nav className="w-full bg-pink-700 shadow-md p-2 flex justify-center items-center gap-3 flex-wrap sticky top-[96px] z-10">
-        <NavButton page="home" label="Home" current={currentPage} onClick={() => setCurrentPage('home')} />
-        <NavButton page="my-account" label="My Account" current={currentPage} onClick={() => setCurrentPage('my-account')} />
+      
+      {/* Mobile Dropdown Menu */}
+      {isMobileMenuOpen && (
+        <div ref={mobileMenuRef} className="sm:hidden absolute top-[96px] left-0 right-0 bg-pink-700 shadow-lg p-4 z-10 flex flex-col items-start gap-2">
+            <MobileNavButton label="Home" current={currentPage === 'home'} onClick={() => navigateTo('home')} />
+            <MobileNavButton label="My Account" current={currentPage === 'my-account'} onClick={() => navigateTo('my-account')} />
+            {userData.role !== 'doctor' && (
+                <MobileNavButton label="Mammo-at-Home" current={currentPage === 'mammo-at-home'} onClick={() => navigateTo('mammo-at-home')} />
+            )}
+            <MobileNavButton label="Forum" current={currentPage === 'forum'} onClick={() => navigateTo('forum')} />
+            <MobileNavButton label="Connect" current={currentPage === 'connect'} onClick={() => navigateTo('connect')} />
+            {userData.role === 'doctor' && (
+                <MobileNavButton label="Patient Database" current={currentPage === 'my-patient-database'} onClick={() => navigateTo('my-patient-database')} />
+            )}
+            <MobileNavButton label="Our Process" current={currentPage === 'our-process'} onClick={() => navigateTo('our-process')} />
+            <MobileNavButton label="Our Team" current={currentPage === 'our-team'} onClick={() => navigateTo('our-team')} />
+        </div>
+      )}
+
+      {/* Desktop Horizontal Nav */}
+      <nav className="w-full bg-pink-700 shadow-md p-2 hidden sm:flex justify-center items-center gap-2 sticky top-[96px] z-10">
+        <NavButton page="home" label="Home" current={currentPage} onClick={() => navigateTo('home')} />
+        <NavButton page="my-account" label="My Account" current={currentPage} onClick={() => navigateTo('my-account')} />
         {userData.role !== 'doctor' && (
-            <NavButton page="mammo-at-home" label="Mammo-at-Home" current={currentPage} onClick={() => setCurrentPage('mammo-at-home')} />
+            <NavButton page="mammo-at-home" label="Mammo-at-Home" current={currentPage} onClick={() => navigateTo('mammo-at-home')} />
         )}
-        <NavButton page="forum" label="Forum" current={currentPage} onClick={() => setCurrentPage('forum')} />
-        <NavButton page="connect" label="Connect" current={currentPage} onClick={() => setCurrentPage('connect')} />
+        <NavButton page="forum" label="Forum" current={currentPage} onClick={() => navigateTo('forum')} />
+        <NavButton page="connect" label="Connect" current={currentPage} onClick={() => navigateTo('connect')} />
         {userData.role === 'doctor' && (
-            <NavButton page="my-patient-database" label="Patient Database" current={currentPage} onClick={() => setCurrentPage('my-patient-database')} />
+            <NavButton page="my-patient-database" label="Patient Database" current={currentPage} onClick={() => navigateTo('my-patient-database')} />
         )}
-        <NavButton page="our-process" label="Our Process" current={currentPage} onClick={() => setCurrentPage('our-process')} />
-        <NavButton page="our-team" label="Our Team" current={currentPage} onClick={() => setCurrentPage('our-team')} />
+        <NavButton page="our-process" label="Our Process" current={currentPage} onClick={() => navigateTo('our-process')} />
+        <NavButton page="our-team" label="Our Team" current={currentPage} onClick={() => navigateTo('our-team')} />
       </nav>
+
       <main className="flex-grow w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {renderPage()}
       </main>

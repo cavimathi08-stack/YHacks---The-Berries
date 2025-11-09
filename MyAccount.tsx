@@ -81,20 +81,20 @@ const MyAccount: React.FC = () => {
   };
 
   const renderInfoItem = (label: string, value: string | null) => (
-    <div className="flex justify-between items-center py-2 border-b border-pink-100 last:border-b-0">
+    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center py-2 border-b border-pink-100 last:border-b-0">
       <p className="text-gray-600">{label}</p>
-      <p className="font-bold text-pink-700">{value || 'Not specified'}</p>
+      <p className="font-bold text-pink-700 text-left sm:text-right">{value || 'Not specified'}</p>
     </div>
   );
   
   const renderSelectInput = (label: string, field: keyof UserData, options: string[]) => (
-     <div className="grid grid-cols-3 items-center gap-4">
-        <label htmlFor={String(field)} className="text-gray-600 font-semibold col-span-1">{label}</label>
+     <div className="grid grid-cols-1 sm:grid-cols-3 items-center gap-2 sm:gap-4">
+        <label htmlFor={String(field)} className="text-gray-600 font-semibold sm:col-span-1">{label}</label>
         <select
           id={String(field)}
           value={editedData?.[field] as string || ''}
           onChange={(e) => handleInputChange(field, e.target.value)}
-          className="col-span-2 p-2 border border-pink-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:outline-none w-full"
+          className="sm:col-span-2 p-2 border border-pink-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:outline-none w-full"
         >
           <option value="" disabled>Select an option</option>
           {options.map(opt => <option key={opt} value={opt}>{opt}</option>)}
@@ -144,28 +144,28 @@ const MyAccount: React.FC = () => {
             <div className="space-y-4">
                 {editedData.role === 'patient' && renderSelectInput('Current Stage', 'status', patientStages)}
                 {editedData.role === 'doctor' && (
-                    <div className="grid grid-cols-3 items-center gap-4">
-                        <label htmlFor="specialty" className="text-gray-600 font-semibold col-span-1">Specialty</label>
+                    <div className="grid grid-cols-1 sm:grid-cols-3 items-center gap-2 sm:gap-4">
+                        <label htmlFor="specialty" className="text-gray-600 font-semibold sm:col-span-1">Specialty</label>
                         <input
                             type="text"
                             id="specialty"
                             value={editedData.specialty || ''}
                             onChange={(e) => handleInputChange('specialty', e.target.value)}
-                            className="col-span-2 p-2 border border-pink-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:outline-none w-full"
+                            className="sm:col-span-2 p-2 border border-pink-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:outline-none w-full"
                         />
                     </div>
                 )}
                 {renderSelectInput('Age Range', 'ageRange', ageRanges)}
                 {renderSelectInput('Community Type', 'communityType', communityTypes)}
                 {renderSelectInput('Climate', 'climate', climates)}
-                <div className="grid grid-cols-3 items-center gap-4">
-                    <label htmlFor="localHospital" className="text-gray-600 font-semibold col-span-1">Local Hospital</label>
+                <div className="grid grid-cols-1 sm:grid-cols-3 items-center gap-2 sm:gap-4">
+                    <label htmlFor="localHospital" className="text-gray-600 font-semibold sm:col-span-1">Local Hospital</label>
                     <input
                         type="text"
                         id="localHospital"
                         value={editedData.localHospital || ''}
                         onChange={(e) => handleInputChange('localHospital', e.target.value)}
-                        className="col-span-2 p-2 border border-pink-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:outline-none w-full"
+                        className="sm:col-span-2 p-2 border border-pink-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:outline-none w-full"
                     />
                 </div>
                 {renderSelectInput('Province', 'province', provinces)}
@@ -192,19 +192,19 @@ const MyAccount: React.FC = () => {
   return (
     <div className="w-full max-w-4xl mx-auto space-y-8">
       <div className="text-center">
-        <h1 className="text-4xl font-bold text-pink-700">Hello, {username}!</h1>
-        <p className="text-lg text-pink-700/90 mt-2">
+        <h1 className="text-3xl sm:text-4xl font-bold text-pink-700">Hello, {username}!</h1>
+        <p className="text-md sm:text-lg text-pink-700/90 mt-2">
           Here's a summary of your profile.
         </p>
       </div>
 
       {/* Profile Card */}
-      <div className="bg-white/70 backdrop-blur-sm p-8 rounded-xl shadow-lg transition-all duration-500">
+      <div className="bg-white/70 backdrop-blur-sm p-6 sm:p-8 rounded-xl shadow-lg transition-all duration-500">
         {isEditing ? renderEditMode() : renderViewMode()}
       </div>
 
       {/* Recent Posts Section */}
-      <div className="bg-white/70 backdrop-blur-sm p-8 rounded-xl shadow-lg">
+      <div className="bg-white/70 backdrop-blur-sm p-6 sm:p-8 rounded-xl shadow-lg">
         <h2 className="text-2xl font-bold text-pink-700 mb-4 text-center">Recent Posts</h2>
         {userData?.posts && userData.posts.length > 0 ? (
           <div className="space-y-4">
@@ -222,7 +222,7 @@ const MyAccount: React.FC = () => {
                   </p>
                 </div>
                 {expandedPostId === post.id && (
-                  <div id={`replies-for-${post.id}`} className="pl-8 pt-4 pb-2">
+                  <div id={`replies-for-${post.id}`} className="pl-4 sm:pl-8 pt-4 pb-2">
                     <h4 className="text-md font-semibold text-pink-700 mb-2 border-b border-pink-100 pb-1">Replies</h4>
                     <div className="space-y-3">
                       {post.replies && post.replies.length > 0 ? (

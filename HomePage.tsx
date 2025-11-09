@@ -1,4 +1,3 @@
-
 import React from 'react';
 import OurMission from './OurMission';
 import OurPartners from './OurPartners';
@@ -14,7 +13,7 @@ interface HomePageProps {
 
 const HomePage: React.FC<HomePageProps> = ({ navigateTo, userRole }) => {
   return (
-    <div className="flex flex-col items-center justify-center w-full space-y-16">
+    <div className="flex flex-col items-center justify-center w-full space-y-12 md:space-y-16">
       
       {/* Banner Image */}
       <div className="w-full aspect-[25/5] overflow-hidden rounded-xl shadow-lg">
@@ -26,41 +25,41 @@ const HomePage: React.FC<HomePageProps> = ({ navigateTo, userRole }) => {
       </div>
 
       <div className="text-center">
-        <h1 className="text-7xl font-extrabold mb-6 text-pink-700 drop-shadow-sm">
+        <h1 className="text-5xl sm:text-6xl md:text-7xl font-extrabold mb-6 text-pink-700 drop-shadow-sm">
           Welcome to OnAURA
         </h1>
-        <p className="text-2xl text-pink-700/90 mt-2">The Future of Women's Health</p>
+        <p className="text-xl sm:text-2xl text-pink-700/90 mt-2">The Future of Women's Health</p>
         <button
           onClick={() => navigateTo('my-account')}
-          className="mt-8 bg-white text-pink-700 font-bold py-3 px-10 rounded-full hover:bg-pink-100 transition-colors duration-300 shadow-lg focus:outline-none focus:ring-4 focus:ring-pink-300 text-xl border-2 border-pink-500"
+          className="mt-8 bg-white text-pink-700 font-bold py-3 px-10 rounded-full hover:bg-pink-100 transition-colors duration-300 shadow-lg focus:outline-none focus:ring-4 focus:ring-pink-300 text-lg sm:text-xl border-2 border-pink-500"
         >
           My Account
         </button>
       </div>
 
       {/* Navigation Cards */}
-      <div className="w-full max-w-5xl flex flex-wrap justify-center gap-8 px-4">
+      <div className="w-full max-w-5xl flex flex-row flex-wrap justify-center gap-4 sm:gap-8 px-4">
         {userRole !== 'doctor' && (
           <div
             onClick={() => navigateTo('mammo-at-home')}
-            className="bg-white/70 backdrop-blur-sm p-8 rounded-xl shadow-lg text-center transform hover:scale-105 transition-transform duration-300 cursor-pointer flex flex-col justify-between flex-1 min-w-[300px] max-w-md"
+            className="bg-white/70 backdrop-blur-sm p-6 sm:p-8 rounded-xl shadow-lg text-center transform hover:scale-105 transition-transform duration-300 cursor-pointer flex flex-col justify-center sm:justify-between flex-1"
           >
             <div>
-              <h2 className="text-2xl font-bold text-pink-700 mb-3">Your Private Health Calendar</h2>
-              <p className="text-gray-600 leading-relaxed mb-6">Track your health privately. Upload monthly images to monitor changes over time, securely and confidentially.</p>
+              <h2 className="text-xl sm:text-2xl font-bold text-pink-700 sm:mb-3">Your Private Health Calendar</h2>
+              <p className="hidden sm:block text-gray-600 leading-relaxed mt-2 mb-6">Track your health privately. Upload monthly images to monitor changes over time, securely and confidentially.</p>
             </div>
-            <span className="font-bold text-pink-600 hover:text-pink-800 self-center">Explore Mammo-at-Home &rarr;</span>
+            <span className="hidden sm:block font-bold text-pink-600 hover:text-pink-800 self-center">Explore Mammo-at-Home &rarr;</span>
           </div>
         )}
         <div
           onClick={() => navigateTo('forum')}
-          className="bg-white/70 backdrop-blur-sm p-8 rounded-xl shadow-lg text-center transform hover:scale-105 transition-transform duration-300 cursor-pointer flex flex-col justify-between flex-1 min-w-[300px] max-w-md"
+          className="bg-white/70 backdrop-blur-sm p-6 sm:p-8 rounded-xl shadow-lg text-center transform hover:scale-105 transition-transform duration-300 cursor-pointer flex flex-col justify-center sm:justify-between flex-1"
         >
           <div>
-            <h2 className="text-2xl font-bold text-pink-700 mb-3">Connect & Share</h2>
-            <p className="text-gray-600 leading-relaxed mb-6">Join our supportive community. Share experiences, ask questions, and connect with others in a safe and anonymous space.</p>
+            <h2 className="text-xl sm:text-2xl font-bold text-pink-700 sm:mb-3">Connect & Share</h2>
+            <p className="hidden sm:block text-gray-600 leading-relaxed mt-2 mb-6">Join our supportive community. Share experiences, ask questions, and connect with others in a safe and anonymous space.</p>
           </div>
-          <span className="font-bold text-pink-600 hover:text-pink-800 self-center">Visit the Forum &rarr;</span>
+          <span className="hidden sm:block font-bold text-pink-600 hover:text-pink-800 self-center">Visit the Forum &rarr;</span>
         </div>
       </div>
 

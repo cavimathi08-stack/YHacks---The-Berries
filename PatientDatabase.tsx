@@ -21,12 +21,12 @@ const PatientDatabase: React.FC = () => {
   return (
     <div className="w-full max-w-6xl mx-auto">
       <div className="text-center mb-10">
-        <h1 className="text-4xl font-bold text-pink-700">My Patient Database</h1>
-        <p className="text-lg text-pink-700/90 mt-2">
+        <h1 className="text-3xl sm:text-4xl font-bold text-pink-700">My Patient Database</h1>
+        <p className="text-md sm:text-lg text-pink-700/90 mt-2">
           Manage and review patient information.
         </p>
       </div>
-      <div className="bg-white/80 backdrop-blur-sm p-6 rounded-xl shadow-lg">
+      <div className="bg-white/80 backdrop-blur-sm p-4 sm:p-6 rounded-xl shadow-lg">
         <div className="flex flex-col sm:flex-row justify-between items-center mb-4 gap-4">
           <input 
             type="text" 
