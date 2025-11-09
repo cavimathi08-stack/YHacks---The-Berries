@@ -35,14 +35,26 @@ interface UserData {
   }>;
 }
 
+const NavButton: React.FC<{ page: string; label: string; current: string; onClick: () => void }> = ({ page, label, current, onClick }) => (
+  <button
+    onClick={onClick}
+    className={`py-2 px-4 rounded-md font-semibold transition-colors duration-200 text-sm sm:text-base ${
+      current === page
+        ? 'bg-white text-pink-700 shadow-inner'
+        : 'text-pink-100 hover:bg-pink-600 hover:text-white'
+    }`}
+  >
+    {label}
+  </button>
+);
+
+
 const App: React.FC = () => {
   const [currentUser, setCurrentUser] = useState<string | null>(null);
   const [userData, setUserData] = useState<UserData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState<'home' | 'forum' | 'mammo-at-home' | 'my-patient-database' | 'our-process' | 'my-account' | 'connect' | 'our-team'>('home');
   
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const menuRef = useRef<HTMLDivElement>(null);
   const [isLanguageMenuOpen, setIsLanguageMenuOpen] = useState(false);
   const languageMenuRef = useRef<HTMLDivElement>(null);
 
@@ -110,9 +122,6 @@ const App: React.FC = () => {
   // Effect to handle clicks outside the menus to close them
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
-        setIsMenuOpen(false);
-      }
       if (languageMenuRef.current && !languageMenuRef.current.contains(event.target as Node)) {
         setIsLanguageMenuOpen(false);
       }
@@ -132,7 +141,6 @@ const App: React.FC = () => {
     sessionStorage.removeItem('onAuraCurrentUser');
     setCurrentUser(null);
     setUserData(null);
-    setIsMenuOpen(false);
   };
   
   const handleOnboardingFinish = () => {
@@ -184,51 +192,26 @@ const App: React.FC = () => {
 
   return (
     <div className="flex flex-col min-h-screen bg-pink-200 text-gray-900 antialiased">
-      <header className="w-full p-4 flex justify-between items-center text-pink-700 bg-pink-50 shadow-md backdrop-blur-sm sticky top-0 z-10">
+      <header className="w-full h-[96px] p-4 flex justify-between items-center text-pink-700 bg-pink-50 shadow-md backdrop-blur-sm sticky top-0 z-10">
         <div className="flex-1 flex justify-start items-center">
           <img
             src="https://i.ibb.co/fV8hMfkD/NAURA-1-removebg-preview.png"
             alt="OnAURA Secondary Logo"
             className="h-12 mr-2"
           />
-          <div className="relative" ref={menuRef}>
-            <button
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="p-2 rounded-md hover:bg-pink-100/50 focus:outline-none focus:ring-2 focus:ring-pink-500"
-              aria-label="Open navigation menu"
-              aria-expanded={isMenuOpen}
-              aria-controls="navigation-menu"
-            >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16"></path>
-              </svg>
-            </button>
-            {isMenuOpen && (
-              <nav id="navigation-menu" className="absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-20">
-                <button onClick={() => { setCurrentPage('home'); setIsMenuOpen(false); }} className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-pink-100">Home</button>
-                <button onClick={() => { setCurrentPage('my-account'); setIsMenuOpen(false); }} className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-pink-100">My Account</button>
-                {userData.role !== 'doctor' && (
-                  <button onClick={() => { setCurrentPage('mammo-at-home'); setIsMenuOpen(false); }} className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-pink-100">Mammo-at-Home</button>
-                )}
-                <button onClick={() => { setCurrentPage('forum'); setIsMenuOpen(false); }} className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-pink-100">Forum</button>
-                <button onClick={() => { setCurrentPage('connect'); setIsMenuOpen(false); }} className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-pink-100">Connect</button>
-                {userData.role === 'doctor' && (
-                  <button onClick={() => { setCurrentPage('my-patient-database'); setIsMenuOpen(false); }} className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-pink-100">My Patient Database</button>
-                )}
-                <button onClick={() => { setCurrentPage('our-process'); setIsMenuOpen(false); }} className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-pink-100">Our Process</button>
-                <button onClick={() => { setCurrentPage('our-team'); setIsMenuOpen(false); }} className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-pink-100">Our Team</button>
-                <div className="border-t border-gray-200 my-1"></div>
-                <button onClick={handleLogout} className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-pink-100">Logout</button>
-              </nav>
-            )}
-          </div>
         </div>
         <div className="flex-1 flex justify-center">
           <button onClick={() => setCurrentPage('home')} className="flex items-center focus:outline-none">
             <img src="https://i.ibb.co/qMNnzDzq/Untitled-2.png" alt="OnAURA Logo" className="h-16" />
           </button>
         </div>
-        <div className="flex-1 flex justify-end">
+        <div className="flex-1 flex justify-end items-center gap-4">
+           <button 
+             onClick={handleLogout} 
+             className="font-semibold p-2 rounded-md hover:bg-pink-100/50 focus:outline-none focus:ring-2 focus:ring-pink-500"
+            >
+              Logout
+            </button>
           <div className="relative" ref={languageMenuRef}>
             <button
               onClick={() => setIsLanguageMenuOpen(!isLanguageMenuOpen)}
@@ -258,6 +241,20 @@ const App: React.FC = () => {
           </div>
         </div>
       </header>
+      <nav className="w-full bg-pink-700 shadow-md p-2 flex justify-center items-center gap-3 flex-wrap sticky top-[96px] z-10">
+        <NavButton page="home" label="Home" current={currentPage} onClick={() => setCurrentPage('home')} />
+        <NavButton page="my-account" label="My Account" current={currentPage} onClick={() => setCurrentPage('my-account')} />
+        {userData.role !== 'doctor' && (
+            <NavButton page="mammo-at-home" label="Mammo-at-Home" current={currentPage} onClick={() => setCurrentPage('mammo-at-home')} />
+        )}
+        <NavButton page="forum" label="Forum" current={currentPage} onClick={() => setCurrentPage('forum')} />
+        <NavButton page="connect" label="Connect" current={currentPage} onClick={() => setCurrentPage('connect')} />
+        {userData.role === 'doctor' && (
+            <NavButton page="my-patient-database" label="Patient Database" current={currentPage} onClick={() => setCurrentPage('my-patient-database')} />
+        )}
+        <NavButton page="our-process" label="Our Process" current={currentPage} onClick={() => setCurrentPage('our-process')} />
+        <NavButton page="our-team" label="Our Team" current={currentPage} onClick={() => setCurrentPage('our-team')} />
+      </nav>
       <main className="flex-grow w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {renderPage()}
       </main>
