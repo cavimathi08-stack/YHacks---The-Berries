@@ -15,7 +15,7 @@ const teamMembers = [
     name: 'Dhanya Veluppillai',
     school: 'Markham District HS',
     grade: 11,
-    imageUrl: 'https://i.ibb.co/mVWx046/dhanyaphtoto-ONAURA.png',
+    imageUrl: 'https://i.postimg.cc/n9qqdVjm/Screenshot-2025-11-08-201353.png',
     linkedinUrl: 'https://www.linkedin.com/in/dhanya-veluppillai-082385397/',
   },
   {
@@ -23,8 +23,16 @@ const teamMembers = [
     name: 'Dipsa Gautam',
     school: 'St. John Paul II CHS',
     grade: 9,
-    imageUrl: 'https://i.ibb.co/Q32kQHH/Screenshot-2025-11-08-212610.png',
+    imageUrl: 'https://i.postimg.cc/2LnnHjb4/Screenshot-2025-11-08-212610.png',
     linkedinUrl: null,
+  },
+  {
+    id: 4,
+    name: 'Raagavi Theevanan',
+    school: 'Markham District HS',
+    grade: 11,
+    imageUrl: 'https://i.ibb.co/mVWx046L/dhanyaphtoto-ONAURA.png',
+    linkedinUrl: 'https://www.linkedin.com/in/raagavi-theevannan-7375a9395/',
   },
 ];
 

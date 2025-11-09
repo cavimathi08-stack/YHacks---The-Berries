@@ -15,7 +15,7 @@ const mockProfessionals = [
     id: 2,
     name: 'Nurse Siku',
     role: 'Oncology Nurse',
-    avatar: 'https://i.pravatar.cc/150?u=nursesiku2',
+    avatar: 'https://i.pravatar.cc/150?u=nursesiku_professional',
   },
   {
     id: 3,
