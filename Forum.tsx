@@ -51,9 +51,21 @@ const mockThreads = [
 
 const Forum: React.FC = () => {
   return (
-    <div className="w-full">
+    <div className="w-full space-y-8">
+      {/* Banner Image */}
+      <div>
+        <div className="w-full aspect-[25/3] overflow-hidden rounded-xl shadow-lg">
+          <img
+            src="https://thefulcrum.ca/wp-content/uploads/2022/10/norval-morrisseau-scaled.jpg"
+            alt="Art by Norval Morrisseau"
+            className="w-full h-full object-cover"
+          />
+        </div>
+        <p className="text-xs text-pink-700/80 text-center mt-1 italic">'Artist and Shaman between Two Worlds' by Norval Morrisseau</p>
+      </div>
+
       {/* Forum Header */}
-      <div className="flex justify-between items-center mb-6">
+      <div className="flex justify-between items-center">
         <h1 className="text-4xl font-bold text-pink-700">Community Forum</h1>
         <button className="bg-pink-600 text-white font-bold py-2 px-6 rounded-full hover:bg-pink-700 transition-colors duration-300 shadow-lg focus:outline-none focus:ring-4 focus:ring-pink-300">
           New Post
