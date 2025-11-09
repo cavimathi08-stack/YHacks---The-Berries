@@ -1,3 +1,4 @@
+
 import React from 'react';
 
 // Data for the team member
@@ -7,7 +8,6 @@ const teamMembers = [
     name: 'Changavi Mathialagan',
     school: 'Markham District HS',
     grade: 12,
-    imageUrl: 'https://media.licdn.com/dms/image/v2/D4E03AQGE2uELmtdtxA/profile-displayphoto-crop_800_800/B4EZn_MRAjIMAI-/0/1760923030001?e=1764201600&v=beta&t=DpHrKX3YYsszW_W9LCv5qmrlwru_qb9F_SKDymbg7rU',
     linkedinUrl: 'https://www.linkedin.com/in/changavi-mathialagan-b9258731a/',
   },
   {
@@ -15,7 +15,6 @@ const teamMembers = [
     name: 'Dhanya Veluppillai',
     school: 'Markham District HS',
     grade: 11,
-    imageUrl: 'https://i.postimg.cc/n9qqdVjm/Screenshot-2025-11-08-201353.png',
     linkedinUrl: 'https://www.linkedin.com/in/dhanya-veluppillai-082385397/',
   },
   {
@@ -23,7 +22,6 @@ const teamMembers = [
     name: 'Dipsa Gautam',
     school: 'St. John Paul II CHS',
     grade: 9,
-    imageUrl: 'https://i.postimg.cc/2LnnHjb4/Screenshot-2025-11-08-212610.png',
     linkedinUrl: null,
   },
   {
@@ -31,7 +29,6 @@ const teamMembers = [
     name: 'Raagavi Theevanan',
     school: 'Markham District HS',
     grade: 11,
-    imageUrl: 'https://i.postimg.cc/J00cvJ95/raagaviphoto.jpg',
     linkedinUrl: 'https://www.linkedin.com/in/raagavi-theevannan-7375a9395/',
   },
 ];
@@ -43,12 +40,7 @@ const OurTeam: React.FC = () => {
       <h1 className="text-4xl font-bold text-pink-700 text-center mb-10">Meet Our Team</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 justify-center">
         {teamMembers.map((member: any) => (
-          <div key={member.id} className="bg-white/70 backdrop-blur-sm p-6 rounded-xl shadow-lg text-center transform hover:scale-105 transition-transform duration-300 flex flex-col">
-            <img 
-              src={member.imageUrl} 
-              alt={`Profile of ${member.name}`}
-              className="w-32 h-32 rounded-full mx-auto mb-4 border-4 border-pink-300 object-cover"
-            />
+          <div key={member.id} className="bg-white/70 backdrop-blur-sm p-6 rounded-xl shadow-lg text-center transform hover:scale-105 transition-transform duration-300 flex flex-col justify-center">
             <div className="flex justify-center items-center gap-2 mb-1">
                 <h3 className="text-xl font-bold text-gray-800">{member.name}</h3>
                 {member.linkedinUrl && (
