@@ -31,7 +31,7 @@ const teamMembers = [
     name: 'Raagavi Theevanan',
     school: 'Markham District HS',
     grade: 11,
-    imageUrl: 'https://i.ibb.co/mVWx046L/dhanyaphtoto-ONAURA.png',
+    imageUrl: 'https://i.postimg.cc/J00cvJ95/raagaviphoto.jpg',
     linkedinUrl: 'https://www.linkedin.com/in/raagavi-theevannan-7375a9395/',
   },
 ];
