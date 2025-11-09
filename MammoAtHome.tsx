@@ -1,4 +1,6 @@
+
 import React, { useState, useCallback, useRef } from 'react';
+import DataSafety from './DataSafety';
 
 interface MonthlyImage {
   url: string;
@@ -65,15 +67,15 @@ const MammoAtHome: React.FC<MammoAtHomeProps> = ({ currentUser }) => {
   };
 
   return (
-    <div className="w-full max-w-6xl mx-auto">
+    <div className="w-full max-w-6xl mx-auto space-y-8">
       {currentUser === 'Aura' && (
-        <div className="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded-md mb-8 shadow-md" role="alert">
+        <div className="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded-md shadow-md" role="alert">
           <p className="font-bold text-lg">Risk: Low</p>
           <p>Based on your consistent monthly monitoring, your current risk assessment is low. Keep up the great work!</p>
         </div>
       )}
 
-      <div className="text-center mb-10">
+      <div className="text-center">
         <h1 className="text-4xl font-bold text-pink-700">Mammo-at-Home</h1>
         <p className="text-lg text-pink-700/90 mt-2">
           Your private monthly calendar. Upload a photo each month to track changes over time.
@@ -81,6 +83,8 @@ const MammoAtHome: React.FC<MammoAtHomeProps> = ({ currentUser }) => {
         <p className="text-sm text-gray-500 mt-2">Your images are private and only visible to you.</p>
       </div>
       
+      <DataSafety />
+
       <input
         type="file"
         ref={fileInputRef}

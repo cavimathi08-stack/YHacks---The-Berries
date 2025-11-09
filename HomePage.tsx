@@ -3,6 +3,7 @@ import React from 'react';
 import OurMission from './OurMission';
 import OurPartners from './OurPartners';
 import DataSafety from './DataSafety'; // Import the new component
+import Testimonials from './Testimonials'; // Import the new Testimonials component
 
 type Page = 'mammo-at-home' | 'forum' | 'my-account';
 
@@ -16,7 +17,7 @@ const HomePage: React.FC<HomePageProps> = ({ navigateTo, userRole }) => {
     <div className="flex flex-col items-center justify-center w-full space-y-16">
       
       {/* Banner Image */}
-      <div className="w-full aspect-[25/4] overflow-hidden rounded-xl shadow-lg">
+      <div className="w-full aspect-[25/5] overflow-hidden rounded-xl shadow-lg">
         <img
           src="https://i.ibb.co/5XR0PvQf/Screenshot-2025-11-06-072628.png"
           alt="Breast cancer awareness banner with a diverse group of women"
@@ -73,6 +74,10 @@ const HomePage: React.FC<HomePageProps> = ({ navigateTo, userRole }) => {
 
       <section id="data-safety" className="w-full">
         <DataSafety />
+      </section>
+
+      <section id="testimonials" className="w-full">
+        <Testimonials />
       </section>
     </div>
   );

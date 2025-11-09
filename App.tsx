@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Onboarding from './Onboarding';
 import Forum from './Forum';
-import OurTeam from './OurTeam';
 import MammoAtHome from './MammoAtHome';
 import PatientDatabase from './PatientDatabase';
 import OurProcess from './OurProcess';
@@ -9,6 +8,7 @@ import HomePage from './HomePage';
 import MyAccount from './MyAccount';
 import Auth from './Auth'; // Import the new Auth component
 import Connect from './Connect'; // Import the new Connect component
+import OurTeam from './OurTeam'; // Import the OurTeam component
 
 // Define the structure for a user's data
 interface UserData {
@@ -39,7 +39,7 @@ const App: React.FC = () => {
   const [currentUser, setCurrentUser] = useState<string | null>(null);
   const [userData, setUserData] = useState<UserData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [currentPage, setCurrentPage] = useState<'home' | 'forum' | 'our-team' | 'mammo-at-home' | 'my-patient-database' | 'our-process' | 'my-account' | 'connect'>('home');
+  const [currentPage, setCurrentPage] = useState<'home' | 'forum' | 'mammo-at-home' | 'my-patient-database' | 'our-process' | 'my-account' | 'connect' | 'our-team'>('home');
   
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -144,7 +144,7 @@ const App: React.FC = () => {
     }
   };
 
-  const navigateTo = (page: 'home' | 'forum' | 'our-team' | 'mammo-at-home' | 'my-patient-database' | 'our-process' | 'my-account' | 'connect') => {
+  const navigateTo = (page: 'home' | 'forum' | 'mammo-at-home' | 'my-patient-database' | 'our-process' | 'my-account' | 'connect' | 'our-team') => {
     setCurrentPage(page);
   };
   
@@ -169,11 +169,11 @@ const App: React.FC = () => {
   const renderPage = () => {
     switch(currentPage) {
       case 'forum': return <Forum />;
-      case 'our-team': return <OurTeam />;
       case 'mammo-at-home': return <MammoAtHome currentUser={currentUser} />;
       case 'my-patient-database':
         return userData.role === 'doctor' ? <PatientDatabase /> : <div className="text-center text-pink-700">Access Denied. This feature is for doctors and researchers.</div>;
       case 'our-process': return <OurProcess />;
+      case 'our-team': return <OurTeam />;
       case 'my-account': return <MyAccount />;
       case 'connect': return <Connect currentUser={currentUser} />;
       case 'home':
@@ -215,8 +215,8 @@ const App: React.FC = () => {
                 {userData.role === 'doctor' && (
                   <button onClick={() => { setCurrentPage('my-patient-database'); setIsMenuOpen(false); }} className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-pink-100">My Patient Database</button>
                 )}
-                <button onClick={() => { setCurrentPage('our-team'); setIsMenuOpen(false); }} className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-pink-100">Our Team</button>
                 <button onClick={() => { setCurrentPage('our-process'); setIsMenuOpen(false); }} className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-pink-100">Our Process</button>
+                <button onClick={() => { setCurrentPage('our-team'); setIsMenuOpen(false); }} className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-pink-100">Our Team</button>
                 <div className="border-t border-gray-200 my-1"></div>
                 <button onClick={handleLogout} className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-pink-100">Logout</button>
               </nav>
