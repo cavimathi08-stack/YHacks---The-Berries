@@ -1,8 +1,10 @@
+
 import React from 'react';
 import OurMission from './OurMission';
 import OurPartners from './OurPartners';
+import DataSafety from './DataSafety'; // Import the new component
 
-type Page = 'mammo-at-home' | 'forum';
+type Page = 'mammo-at-home' | 'forum' | 'my-account';
 
 interface HomePageProps {
   navigateTo: (page: Page) => void;
@@ -27,6 +29,12 @@ const HomePage: React.FC<HomePageProps> = ({ navigateTo, userRole }) => {
           Welcome to OnAURA
         </h1>
         <p className="text-2xl text-pink-700/90 mt-2">The Future of Women's Health</p>
+        <button
+          onClick={() => navigateTo('my-account')}
+          className="mt-8 bg-white text-pink-700 font-bold py-3 px-10 rounded-full hover:bg-pink-100 transition-colors duration-300 shadow-lg focus:outline-none focus:ring-4 focus:ring-pink-300 text-xl border-2 border-pink-500"
+        >
+          My Account
+        </button>
       </div>
 
       {/* Navigation Cards */}
@@ -61,6 +69,10 @@ const HomePage: React.FC<HomePageProps> = ({ navigateTo, userRole }) => {
 
       <section id="our-partners" className="w-full">
         <OurPartners />
+      </section>
+
+      <section id="data-safety" className="w-full">
+        <DataSafety />
       </section>
     </div>
   );
